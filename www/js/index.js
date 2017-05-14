@@ -37,7 +37,24 @@ var app = function() {
     };
 
     self.reset = function () {
-        self.vue.board = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0];
+        self.vue.board = [
+            {1: 'red'},
+            {2: 'white'},
+            {3: 'red'},
+            {4: 'white'},
+            {5: 'white'},
+            {6: 'red'},
+            {7: 'white'},
+            {8: 'red'},
+            {9: 'red'},
+            {10: 'white'},
+            {11: 'red'},
+            {12: 'white'},
+            {13: 'white'},
+            {14: 'red'},
+            {15: 'white'},
+            {0: 'black'},
+        ];
     };
 
     self.shuffle = function(i, j) {
@@ -55,7 +72,24 @@ var app = function() {
         delimiters: ['${', '}'],
         unsafeDelimiters: ['!{', '}'],
         data: {
-            board: []
+            board: [
+                {1: 'red'},
+                {2: 'white'},
+                {3: 'red'},
+                {4: 'white'},
+                {5: 'white'},
+                {6: 'red'},
+                {7: 'white'},
+                {8: 'red'},
+                {9: 'red'},
+                {10: 'white'},
+                {11: 'red'},
+                {12: 'white'},
+                {13: 'white'},
+                {14: 'red'},
+                {15: 'white'},
+                {0: 'black'},
+            ]
         },
         methods: {
             reset: self.reset,
