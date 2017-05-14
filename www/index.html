@@ -50,7 +50,7 @@
             <table>
                 <tr v-for="i in [0, 1, 2, 3]">
                     <td v-for="j in [0, 1, 2, 3]" v-on:click="shuffle(i,j)"
-                        v-bind:class="{red: Object.values(board[4*i+j])=='red', black: 4*i+j == 15}" class="center">
+                        v-bind:class="{red: Object.values(board[4*i+j])=='red', black: Object.values(board[4*i+j]) == 'black'}" class="center">
                         (${i}, ${j}): ${Object.keys(board[4*i + j])}
                     </td>
                 </tr>

@@ -59,7 +59,63 @@ var app = function() {
 
     self.shuffle = function(i, j) {
         // You need to implement this.
-        console.log("Shuffle:" + i + ", " + j);
+        if (self.vue.cellColor(i, j+1) == 'black'){
+            self.vue.swap(4*i+j, 4*i+(j+1));
+            // temp = self.vue.board[4*i+j];
+            // Vue.set(self.vue.board, 4*i+j, self.vue.board[4*i+(j+1)]);
+            // Vue.set(self.vue.board, 4*i+(j+1), temp);
+            /* Store black cell in temp
+            self.vue.temp1 = Object.keys(self.vue.board[4*i+(j+1)])[0];
+            self.vue.temp2 = Object.values(self.vue.board[4*i+(j+1)])[0];
+            //console.log(self.vue.temp1);
+            //console.log(self.vue.temp2);
+            console.log(self.vue.board[4*i+(j+1)][0]);
+            
+            // Store adjacent cell into black cell
+            Object.keys(self.vue.board[4*i+(j+1)])[0] = Object.keys(self.vue.board[4*i+j])[0];
+            Object.values(self.vue.board[4*i+(j+1)])[0] = Object.values(self.vue.board[4*i+j])[0];
+
+            // Store temp cell into that adjacent cell
+            Object.keys(self.vue.board[4*i+j])[0] = self.vue.temp;
+            Object.values(self.vue.board[4*i+j])[0] = self.vue.temp;*/
+        } else if (self.cellColor(i, j-1) == 'black'){
+            self.vue.swap(4*i+j, 4*i+(j-1));
+            // temp = self.vue.board[4*i+j];
+            // Vue.set(self.vue.board, 4*i+j, self.vue.board[4*i+(j-1)]);
+            // Vue.set(self.vue.board, 4*i+(j-1), temp);
+        } else if (self.cellColor(i+1, j) == 'black'){
+            self.vue.swap(4*i+j, 4*(i+1)+j)
+            // temp = self.vue.board[4*i+j];
+            // Vue.set(self.vue.board, 4*i+j, self.vue.board[4*(i+1)+j]);
+            // Vue.set(self.vue.board, 4*(i+1)+j, temp);
+        } else if (self.cellColor(i-1, j) == 'black'){
+            self.vue.swap(4*i+j, 4*(i-1)+j);
+            // temp = self.vue.board[4*i+j];
+            // Vue.set(self.vue.board, 4*i+j, self.vue.board[4*(i-1)+j]);
+            // Vue.set(self.vue.board, 4*(i-1)+j, temp);
+        } else {
+            console.log("I can move!");
+        }
+            
+        //Object.key(self.vue.temp) = Object.key(self.vue.board[4*i+j])
+        //console.log("Shuffle:" + i + ", " + j);
+    };
+
+    // Swap the cells
+    self.swap = function(current, target) {
+        temp = self.vue.board[current];
+        Vue.set(self.vue.board, current, self.vue.board[target]);
+        Vue.set(self.vue.board, target, temp);
+    }
+
+    // Returns the (String) color associated with that cell
+    self.cellColor = function(i, j) {
+        try {
+            return (Object.values(self.vue.board[4*i+j]));
+        } catch (exception) {
+            //console.error('NULL ERROR', exception.message);
+        }
+
     };
 
     self.scramble = function() {
@@ -89,12 +145,16 @@ var app = function() {
                 {14: 'red'},
                 {15: 'white'},
                 {0: 'black'},
-            ]
+            ],
+            temp1: '',
+            temp2: '',
         },
         methods: {
             reset: self.reset,
             shuffle: self.shuffle,
-            scramble: self.scramble
+            swap: self.swap,
+            scramble: self.scramble,
+            cellColor: self.cellColor,
         }
 
     });
