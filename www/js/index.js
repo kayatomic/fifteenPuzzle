@@ -36,6 +36,7 @@ var app = function() {
         self.is_configured = true;
     };
 
+    // Resets the board to its original state
     self.reset = function () {
         self.vue.board = [
             {1: 'red'},
@@ -57,7 +58,8 @@ var app = function() {
         ];
     };
 
-    // Checks if the black cell is adjacent, if true swaps the according cells
+    // Checks if the black cell is adjacent 
+    // If true swaps the according cells
     self.shuffle = function(i, j) {
         // You need to implement this.
         if (self.vue.cellColor(i, j+1) == 'black'){
@@ -86,11 +88,11 @@ var app = function() {
         } else if (self.cellColor(i-1, j) == 'black'){
             self.vue.swap(4*i+j, 4*(i-1)+j);
         } else {
-            console.log("I can move!");
+            console.log("I can't move!");
         }
     };
 
-    // Swap the cells
+    // Swaps the cells
     self.swap = function(current, target) {
         temp = self.vue.board[current];
         Vue.set(self.vue.board, current, self.vue.board[target]);
@@ -103,10 +105,13 @@ var app = function() {
             return (Object.values(self.vue.board[4*i+j]));
         } catch (exception) {
             //console.error('NULL ERROR', exception.message);
+            // Catches the exception when the coordinate of the cell is
+            // not within the range of the board
         }
 
     };
 
+    // Scrambles the board and returns the array containing the newly scrambled board
     self.scrambleOnce = function() {
         self.vue.boardScrambled = [];
         // Fisher-Yates Shuffle
@@ -114,10 +119,19 @@ var app = function() {
             var j = Math.floor(Math.random() * (count + 1));
             self.vue.swap(count, j);
             //console.log(Object.keys(self.vue.board[count])[0]);
+
+            // Add the elements of the array to the new scrambled board array
             self.vue.boardScrambled.push(Object.keys(self.vue.board[count])[0]);
         }
-        
-        return self.vue.boardScrambled.reverse();
+        self.vue.boardScrambled.reverse();
+        console.log("Scrambled!");
+        console.log("Inversion Count: " + 
+            self.getInversionCount(self.vue.boardScrambled));
+            console.log("Empty cell is " + self.findYPosition(self.vue.boardScrambled));
+        self.vue.printArray(self.vue.boardScrambled);
+        // Since the order of the board being pushed to the array is in a reverse order
+        // we need to to reverse the array first before returning
+        return self.vue.boardScrambled;
     }
 
     self.scramble = function() {
@@ -134,7 +148,10 @@ var app = function() {
             console.log(self.vue.board[count]);
         }*/
 
+        // If the scrambled board is not solvable, 
+        // continue scrambling
         while ( self.isSolvable(self.scrambleOnce()) == false ) {
+            //self.vue.printArray(self.vue.boardScrambled);
             self.scrambleOnce();
         }
         //self.vue.printArray(self.vue.boardScrambled);
@@ -142,9 +159,7 @@ var app = function() {
         //var testArray = [13,2,10,3,1,12,8,4,5,0,9,6,15,14,11,7];
         //var testArray = [6,13,7,10,8,9,11,0,15,2,12,5,14,3,1,4];
         //var testArray = [3,9,1,15,14,11,4,6,13,0,10,12,2,7,8,5];
-        console.log("Inversion Count: " + 
-            self.getInversionCount(self.vue.boardScrambled));
-        console.log("Empty cell is " + self.findYPosition(self.vue.boardScrambled));
+        
         
         //self.isSolvable(self.vue.boardScrambled);
         //return self.vue.boardScrambled;
@@ -160,9 +175,16 @@ var app = function() {
     // Determines whether the scrambled board is solvable
     // Returns true if yes, false otherwise
     self.isSolvable = function(boardArr) {
+        // Get the inversion count, check whether it is even or not
         var isInvCntEven = self.isEven(self.getInversionCount(boardArr));
+
+        // Get the position of the blank cell, check if it's on an even row
+        // counting from bottom
         var isEmptyCellEvenRow = self.findYPosition(boardArr);
 
+        // Board is solvable if:
+        // - blank cell is on an even row counting from bottom && num inversion is odd
+        // OR - blank cell is on an odd row counting from bottom && num inversion is even
         if ( (isInvCntEven && !isEmptyCellEvenRow) || 
              (!isInvCntEven && isEmptyCellEvenRow) ) {
             return true;
@@ -174,6 +196,7 @@ var app = function() {
     }
 
     // Counts the number of inversions within the board array
+    // Returns the integer counting the number of inversions within the board
     self.getInversionCount = function(boardArr) {
         inv_cnt = 0;
         for (var i = 0; i < boardArr.length - 1; i++) {
@@ -197,16 +220,25 @@ var app = function() {
         }
     }
 
-    // find position of empty cell from bottom row
-    // returns true if empty cell is on even row, false otherwise
+    // Finds position of blank cell from bottom row
+    // Returns true if blank cell is on even row, false if on odd row
     self.findYPosition = function(boardArr) {
         var indexNum = 0;
+
+        // Locate the index num of the blank cell in the board array
         for (i = 0; i < boardArr.length; i++) {
             if (boardArr[i] == 0) {
                 indexNum = i;
             }
         }
-        console.log("Index of empty cell: " +indexNum);
+        //console.log("Index of empty cell: " +indexNum);
+        
+        // Check to see if it's on an even row
+        // Imagine board array laid out in a 4x4 table
+        //      0  1  2  3  -> even row
+        //      4  5  6  7  -> odd row
+        //      8  9  10 11 -> even row
+        //      12 13 14 15 -> odd row
         if ( (indexNum > -1 && indexNum < 4) || 
              (indexNum > 7 && indexNum < 12) ) {
             return true;
