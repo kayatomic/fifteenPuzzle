@@ -130,11 +130,16 @@ var app = function() {
             self.vue.boardScrambled.push(Object.keys(self.vue.board[count])[0]);
         }
         self.vue.boardScrambled.reverse();
-        self.vue.printArray(self.vue.boardScrambled);
+        //self.vue.printArray(self.vue.boardScrambled);
 
+        //var testArray = [13,2,10,3,1,12,8,4,5,0,9,6,15,14,11,7];
+        //var testArray = [6,13,7,10,8,9,11,0,15,2,12,5,14,3,1,4];
+        var testArray = [3,9,1,15,14,11,4,6,13,0,10,12,2,7,8,5];
         console.log("Inversion Count: " + 
-            self.getInversionCount(self.vue.boardScrambled));
-        console.log("Empty cell is " + self.findYPosition(self.vue.boardScrambled));
+            self.getInversionCount(testArray));
+        console.log("Empty cell is " + self.findYPosition(testArray));
+        
+        self.isSolvable(testArray);
     };
 
     // Prints elements in array for testing purposes
@@ -144,8 +149,19 @@ var app = function() {
         }
     }
 
-    // self.isSolvable = function(boardArr) {
-    // }
+    // Determines whether the scrambled board is solvable
+    // Returns true if yes, false otherwise
+    self.isSolvable = function(boardArr) {
+        var isInvCntEven = self.isEven(self.getInversionCount(boardArr));
+        var isEmptyCellEvenRow = self.findYPosition(boardArr);
+
+        if ( (isInvCntEven && !isEmptyCellEvenRow) || 
+             (!isInvCntEven && isEmptyCellEvenRow) ) {
+            console.log("solvable");
+        } else {
+            console.log("unsolvable");
+        }
+    }
 
     // Counts the number of inversions within the board array
     self.getInversionCount = function(boardArr) {
@@ -159,6 +175,16 @@ var app = function() {
             }
         }
         return inv_cnt;
+    }
+
+    // Determines whether args passed in is odd or even
+    // Returns true if even, false if odd
+    self.isEven = function (number) {
+        if (number % 2 == 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     // find position of empty cell from bottom row
