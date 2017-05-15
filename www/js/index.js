@@ -57,6 +57,7 @@ var app = function() {
         ];
     };
 
+    // Checks if the black cell is adjacent, if true swaps the according cells
     self.shuffle = function(i, j) {
         // You need to implement this.
         if (self.vue.cellColor(i, j+1) == 'black'){
@@ -80,25 +81,13 @@ var app = function() {
             Object.values(self.vue.board[4*i+j])[0] = self.vue.temp;*/
         } else if (self.cellColor(i, j-1) == 'black'){
             self.vue.swap(4*i+j, 4*i+(j-1));
-            // temp = self.vue.board[4*i+j];
-            // Vue.set(self.vue.board, 4*i+j, self.vue.board[4*i+(j-1)]);
-            // Vue.set(self.vue.board, 4*i+(j-1), temp);
         } else if (self.cellColor(i+1, j) == 'black'){
             self.vue.swap(4*i+j, 4*(i+1)+j)
-            // temp = self.vue.board[4*i+j];
-            // Vue.set(self.vue.board, 4*i+j, self.vue.board[4*(i+1)+j]);
-            // Vue.set(self.vue.board, 4*(i+1)+j, temp);
         } else if (self.cellColor(i-1, j) == 'black'){
             self.vue.swap(4*i+j, 4*(i-1)+j);
-            // temp = self.vue.board[4*i+j];
-            // Vue.set(self.vue.board, 4*i+j, self.vue.board[4*(i-1)+j]);
-            // Vue.set(self.vue.board, 4*(i-1)+j, temp);
         } else {
             console.log("I can move!");
         }
-            
-        //Object.key(self.vue.temp) = Object.key(self.vue.board[4*i+j])
-        //console.log("Shuffle:" + i + ", " + j);
     };
 
     // Swap the cells
@@ -106,7 +95,7 @@ var app = function() {
         temp = self.vue.board[current];
         Vue.set(self.vue.board, current, self.vue.board[target]);
         Vue.set(self.vue.board, target, temp);
-    }
+    };
 
     // Returns the (String) color associated with that cell
     self.cellColor = function(i, j) {
@@ -121,6 +110,20 @@ var app = function() {
     self.scramble = function() {
         // Read the Wikipedia article.  If you just randomize,
         // the resulting puzzle may not be solvable.
+        /*min = 0;
+        max = self.vue.board.length;
+        scrambledBoard = [];
+        for (count = 0; count < self.vue.board.length; count++){
+            randomNum = Math.floor(Math.random() * (max - min)) + min;
+            scrambledBoard.push(self.vue.board[randomNum]);
+            self.vue.board.splice(randomNum, 1);
+            console.log(scrambledBoard[count]);
+            console.log(self.vue.board[count]);
+        }*/
+        for (count = self.vue.board.length - 1; count > 0; count--) {
+            var j = Math.floor(Math.random() * (count + 1));
+            self.vue.swap(j, count);
+        }
     };
 
     self.vue = new Vue({
@@ -146,8 +149,6 @@ var app = function() {
                 {15: 'white'},
                 {0: 'black'},
             ],
-            temp1: '',
-            temp2: '',
         },
         methods: {
             reset: self.reset,
