@@ -131,7 +131,6 @@ var app = function() {
         self.vue.printArray(self.vue.boardScrambled);
         // Since the order of the board being pushed to the array is in a reverse order
         // we need to to reverse the array first before returning
-        return self.vue.boardScrambled;
     }
 
     self.scramble = function() {
@@ -148,9 +147,12 @@ var app = function() {
             console.log(self.vue.board[count]);
         }*/
 
+        //Scramble once then check if solvable
+        self.scrambleOnce();
+
         // If the scrambled board is not solvable, 
         // continue scrambling
-        while ( self.isSolvable(self.scrambleOnce()) == false ) {
+        while ( self.isSolvable(self.vue.boardScrambled) == false ) {
             //self.vue.printArray(self.vue.boardScrambled);
             self.scrambleOnce();
         }
