@@ -108,6 +108,7 @@ var app = function() {
     };
 
     self.scramble = function() {
+        self.vue.boardScrambled = [];
         // Read the Wikipedia article.  If you just randomize,
         // the resulting puzzle may not be solvable.
         /*min = 0;
@@ -120,11 +121,40 @@ var app = function() {
             console.log(scrambledBoard[count]);
             console.log(self.vue.board[count]);
         }*/
-        for (count = self.vue.board.length - 1; count > 0; count--) {
+
+        // Fisher-Yates Shuffle
+        for (count = self.vue.board.length - 1; count >= 0; count--) {
             var j = Math.floor(Math.random() * (count + 1));
-            self.vue.swap(j, count);
+            self.vue.swap(count, j);
+            //console.log(Object.keys(self.vue.board[count])[0]);
+            self.vue.boardScrambled.push(Object.keys(self.vue.board[count])[0]);
         }
+        self.vue.boardScrambled.reverse();
+        self.vue.printArray(self.vue.boardScrambled);
     };
+
+    // Prints elements in array for testing purposes
+    self.printArray = function(array) {
+        for (i = 0; i < array.length; i++) {
+            console.log(array[i]);
+        }
+    }
+
+    // self.isSolvable = function(boardArr) {
+    // }
+
+    // Counts the number of inversions within the board array
+    self.getInversionCount = function() {
+        var inv_cnt = 0;
+        for (var i = 0; i < 15; i++) {
+            for (var j = i + 1; j < 16; j++) {
+                //count pairs (i,j) such that i appears before
+                // j but i > j
+                if (boardArr[j] && boardArr[i] && boardArr[i] > boardArr[j])
+                    int_cnt++;
+            }
+        }
+    }
 
     self.vue = new Vue({
         el: "#vue-div",
@@ -149,6 +179,7 @@ var app = function() {
                 {15: 'white'},
                 {0: 'black'},
             ],
+            boardScrambled: [],
         },
         methods: {
             reset: self.reset,
@@ -156,6 +187,7 @@ var app = function() {
             swap: self.swap,
             scramble: self.scramble,
             cellColor: self.cellColor,
+            printArray: self.printArray,
         }
 
     });
