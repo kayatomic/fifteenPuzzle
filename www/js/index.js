@@ -131,6 +131,10 @@ var app = function() {
         }
         self.vue.boardScrambled.reverse();
         self.vue.printArray(self.vue.boardScrambled);
+
+        console.log("Inversion Count: " + 
+            self.getInversionCount(self.vue.boardScrambled));
+        console.log("Empty cell is " + self.findYPosition(self.vue.boardScrambled));
     };
 
     // Prints elements in array for testing purposes
@@ -144,15 +148,34 @@ var app = function() {
     // }
 
     // Counts the number of inversions within the board array
-    self.getInversionCount = function() {
-        var inv_cnt = 0;
-        for (var i = 0; i < 15; i++) {
-            for (var j = i + 1; j < 16; j++) {
+    self.getInversionCount = function(boardArr) {
+        inv_cnt = 0;
+        for (var i = 0; i < boardArr.length - 1; i++) {
+            for (var j = i + 1; j < boardArr.length; j++) {
                 //count pairs (i,j) such that i appears before
                 // j but i > j
                 if (boardArr[j] && boardArr[i] && boardArr[i] > boardArr[j])
-                    int_cnt++;
+                    inv_cnt++;
             }
+        }
+        return inv_cnt;
+    }
+
+    // find position of empty cell from bottom row
+    // returns true if empty cell is on even row, false otherwise
+    self.findYPosition = function(boardArr) {
+        var indexNum = 0;
+        for (i = 0; i < boardArr.length; i++) {
+            if (boardArr[i] == 0) {
+                indexNum = i;
+            }
+        }
+        console.log("Index of empty cell: " +indexNum);
+        if ( (indexNum > -1 && indexNum < 4) || 
+             (indexNum > 7 && indexNum < 12) ) {
+            return true;
+        } else {
+            return false;
         }
     }
 
