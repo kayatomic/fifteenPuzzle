@@ -107,8 +107,20 @@ var app = function() {
 
     };
 
-    self.scramble = function() {
+    self.scrambleOnce = function() {
         self.vue.boardScrambled = [];
+        // Fisher-Yates Shuffle
+        for (count = self.vue.board.length - 1; count >= 0; count--) {
+            var j = Math.floor(Math.random() * (count + 1));
+            self.vue.swap(count, j);
+            //console.log(Object.keys(self.vue.board[count])[0]);
+            self.vue.boardScrambled.push(Object.keys(self.vue.board[count])[0]);
+        }
+        
+        return self.vue.boardScrambled.reverse();
+    }
+
+    self.scramble = function() {
         // Read the Wikipedia article.  If you just randomize,
         // the resulting puzzle may not be solvable.
         /*min = 0;
@@ -122,24 +134,20 @@ var app = function() {
             console.log(self.vue.board[count]);
         }*/
 
-        // Fisher-Yates Shuffle
-        for (count = self.vue.board.length - 1; count >= 0; count--) {
-            var j = Math.floor(Math.random() * (count + 1));
-            self.vue.swap(count, j);
-            //console.log(Object.keys(self.vue.board[count])[0]);
-            self.vue.boardScrambled.push(Object.keys(self.vue.board[count])[0]);
+        while ( self.isSolvable(self.scrambleOnce()) == false ) {
+            self.scrambleOnce();
         }
-        self.vue.boardScrambled.reverse();
         //self.vue.printArray(self.vue.boardScrambled);
 
         //var testArray = [13,2,10,3,1,12,8,4,5,0,9,6,15,14,11,7];
         //var testArray = [6,13,7,10,8,9,11,0,15,2,12,5,14,3,1,4];
-        var testArray = [3,9,1,15,14,11,4,6,13,0,10,12,2,7,8,5];
+        //var testArray = [3,9,1,15,14,11,4,6,13,0,10,12,2,7,8,5];
         console.log("Inversion Count: " + 
-            self.getInversionCount(testArray));
-        console.log("Empty cell is " + self.findYPosition(testArray));
+            self.getInversionCount(self.vue.boardScrambled));
+        console.log("Empty cell is " + self.findYPosition(self.vue.boardScrambled));
         
-        self.isSolvable(testArray);
+        //self.isSolvable(self.vue.boardScrambled);
+        //return self.vue.boardScrambled;
     };
 
     // Prints elements in array for testing purposes
@@ -157,8 +165,10 @@ var app = function() {
 
         if ( (isInvCntEven && !isEmptyCellEvenRow) || 
              (!isInvCntEven && isEmptyCellEvenRow) ) {
+            return true;
             console.log("solvable");
         } else {
+            return false;
             console.log("unsolvable");
         }
     }
