@@ -8,16 +8,21 @@
   margin: 10px;
 }
 /* line 9, ../sass/_main.scss */
-.app .chessboard {
+/*.app .chessboard {
   margin: 20px;
   border: 3px solid black;
-}
+}*/
 /* line 10, ../sass/_main.scss */
-.app .chessboard table {
-  width: 100%;
+.app .chessboard table{
+  /*width: 100px;*/
+  table-layout: fixed;
+  margin: 0 auto;
 }
 /* line 12, ../sass/_main.scss */
 .app .chessboard table td {
-  padding: 10px;
   border: 2px solid black;
+}
+tr {
+	table-layout: fixed;
+	width: 10px;
 }

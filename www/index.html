@@ -51,12 +51,13 @@
                 <tr v-for="i in [0, 1, 2, 3]">
                     <td v-for="j in [0, 1, 2, 3]" v-on:click="shuffle(i,j)"
                         v-bind:class="{red: Object.values(board[4*i+j])=='red', black: Object.values(board[4*i+j]) == 'black'}" class="center">
-                        (${i}, ${j}): ${Object.keys(board[4*i + j])[0]}
+                        ${Object.keys(board[4*i + j])[0]}
                     </td>
                 </tr>
             </table>
 
         </div>
+        <br>
         <div class="container center resetbutton">
             <button v-on:click="reset">Reset</button>
             <button v-on:click="scramble">Scramble</button>
