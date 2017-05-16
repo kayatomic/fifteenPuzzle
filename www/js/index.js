@@ -54,7 +54,7 @@ var app = function() {
             {13: 'white'},
             {14: 'red'},
             {15: 'white'},
-            {0: 'black'},
+            {'': 'black'},
         ];
     };
 
@@ -270,7 +270,7 @@ var app = function() {
                 {13: 'white'},
                 {14: 'red'},
                 {15: 'white'},
-                {0: 'black'},
+                {'': 'black'},
             ],
             boardScrambled: [],
         },
