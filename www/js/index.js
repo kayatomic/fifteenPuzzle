@@ -215,11 +215,7 @@ var app = function() {
     // Determines whether args passed in is odd or even
     // Returns true if even, false if odd
     self.isEven = function (number) {
-        if (number % 2 == 0) {
-            return true;
-        } else {
-            return false;
-        }
+        return (number % 2 == 0 ? true : false);
     }
 
     // Finds position of blank cell from bottom row
@@ -229,9 +225,8 @@ var app = function() {
 
         // Locate the index num of the blank cell in the board array
         for (i = 0; i < boardArr.length; i++) {
-            if (boardArr[i] == 0) {
+            if (boardArr[i] == 0)
                 indexNum = i;
-            }
         }
         //console.log("Index of empty cell: " +indexNum);
         
